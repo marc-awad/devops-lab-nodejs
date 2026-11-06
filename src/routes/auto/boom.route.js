@@ -1,11 +1,18 @@
-import { Router } from 'express'
+import request from 'supertest'
+import app from '../src/app.js'
+import { describe, it, expect } from 'vitest'
 
-const router = Router()
+describe('GET /boom', () => {
+  it('returns 500 with error payload', async () => {
+    const res = await request(app).get('/boom')
+    expect(res.status).toBe(500)
+    expect(res.body.error).toBe(true)
+    expect(typeof res.body.message).toBe('string')
+  })
 
-router.get('/boom', (_req, _res, next) => {
-  const err = new Error('Boom!')
-  err.status = 500
-  next(err)
+  it('returns the exact Boom! message as JSON', async () => {
+    const res = await request(app).get('/boom')
+    expect(res.headers['content-type']).toMatch(/application\/json/)
+    expect(res.body).toEqual({ error: true, message: 'Boom!' })
+  })
 })
-
-export default router
