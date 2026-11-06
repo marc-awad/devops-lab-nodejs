@@ -12,6 +12,15 @@ describe('formatStatus', () => {
   it('warming-up under 60s', () => {
     expect(formatStatus(10)).toBe('warming-up')
   })
+  it('warming-up at zero', () => {
+    expect(formatStatus(0)).toBe('warming-up')
+  })
+  it('warming-up just under 60', () => {
+    expect(formatStatus(59)).toBe('warming-up')
+  })
+  it('healthy exactly at 60', () => {
+    expect(formatStatus(60)).toBe('healthy')
+  })
   it('healthy under 1h', () => {
     expect(formatStatus(3599)).toBe('healthy')
   })
