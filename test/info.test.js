@@ -21,4 +21,10 @@ describe('GET /info', () => {
     expect(res.body.node).toMatch(/^v\d+\.\d+\.\d+/)
     expect(res.body.uptime).toBeGreaterThanOrEqual(0)
   })
+
+  it('returns the same version as /version', async () => {
+    const infoRes = await request(app).get('/info')
+    const versionRes = await request(app).get('/version')
+    expect(infoRes.body.version).toBe(versionRes.body.version)
+  })
 })
